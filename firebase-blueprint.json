@@ -1,0 +1,74 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Registered user profile and settings in Kishore Opinion",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Unique user ID matching auth UID", "maxLength": 128 },
+        "displayName": { "type": "string", "description": "Full name of the user", "maxLength": 100 },
+        "email": { "type": "string", "description": "User email address", "maxLength": 150 },
+        "photoURL": { "type": "string", "description": "Profile picture URL or avatar ID", "maxLength": 100000 },
+        "bio": { "type": "string", "description": "User biography or headline", "maxLength": 300 },
+        "role": { "type": "string", "description": "User role: user or admin", "enum": ["user", "admin"] },
+        "theme": { "type": "string", "description": "Preferred theme mode", "enum": ["dark", "light"] },
+        "emailNotifications": { "type": "boolean", "description": "Notification preference for emails" },
+        "publicProfile": { "type": "boolean", "description": "Privacy preference for profile visibility" },
+        "createdAt": { "type": "string", "description": "ISO timestamp of registration" },
+        "updatedAt": { "type": "string", "description": "ISO timestamp of last profile update" }
+      },
+      "required": ["uid", "displayName", "email", "createdAt"]
+    },
+    "Opinion": {
+      "title": "Opinion",
+      "description": "Opinion submission published by a user",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Document ID", "maxLength": 128 },
+        "userId": { "type": "string", "description": "UID of the author", "maxLength": 128 },
+        "authorName": { "type": "string", "description": "Author display name", "maxLength": 100 },
+        "authorPhoto": { "type": "string", "description": "Author avatar", "maxLength": 100000 },
+        "authorEmail": { "type": "string", "description": "Author email", "maxLength": 150 },
+        "title": { "type": "string", "description": "Title of the opinion", "minLength": 3, "maxLength": 200 },
+        "category": {
+          "type": "string",
+          "description": "Category of the opinion",
+          "enum": ["Education", "Technology", "Society", "Entertainment", "Personal Opinion", "Other"]
+        },
+        "content": { "type": "string", "description": "Detailed opinion text", "minLength": 10, "maxLength": 10000 },
+        "imageUrl": { "type": "string", "description": "Optional image attachment data URL or link", "maxLength": 2000000 },
+        "likesCount": { "type": "number", "description": "Number of endorsements / likes" },
+        "likedBy": { "type": "array", "description": "Array of user IDs who upvoted" },
+        "createdAt": { "type": "string", "description": "ISO timestamp of creation" },
+        "updatedAt": { "type": "string", "description": "ISO timestamp of last update" }
+      },
+      "required": ["userId", "authorName", "title", "category", "content", "createdAt"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Designated administrator identity record",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Admin UID", "maxLength": 128 },
+        "email": { "type": "string", "description": "Admin email", "maxLength": 150 },
+        "role": { "type": "string", "description": "Admin level", "enum": ["admin", "superadmin"] },
+        "grantedAt": { "type": "string", "description": "ISO timestamp when admin role was granted" }
+      },
+      "required": ["uid", "email", "role"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile store, readable and modifiable by owner or admin"
+    },
+    "/opinions/{opinionId}": {
+      "schema": "Opinion",
+      "description": "Shared opinions database, readable by all users, writable by author or admin"
+    },
+    "/admins/{adminId}": {
+      "schema": "Admin",
+      "description": "Admin privileges verification table"
+    }
+  }
+}

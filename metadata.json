@@ -1,0 +1,6 @@
+{
+  "name": "Kishore Opinion",
+  "description": "A modern, secure cloud-powered opinion submission platform featuring personal account management, category filtering, and role-based administration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
